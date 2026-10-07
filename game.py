@@ -82,10 +82,16 @@ class Minesweeper:
                 self.board.toggle_flag((r, c))
                 continue
 
+            before_revealed = len(self.board.revealed)
+
             if self.board.reveal((r, c)):
                 self.display(reveal_mines=True)
                 print("BOOM! You hit a mine.")
                 return
+
+            revealed_count = len(self.board.revealed) - before_revealed
+            print(f"Revealed {revealed_count} cell{'s' if revealed_count != 1 else ''}.")
+
             if self.board.won():
                 self.display()
                 print("You cleared the board!")
