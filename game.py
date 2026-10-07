@@ -2,8 +2,35 @@ from board import Board
 
 
 class Minesweeper:
+    DIFFICULTIES = {
+        "1": ("Easy", 5, 5, 3),
+        "2": ("Medium", 6, 6, 6),
+        "3": ("Hard", 8, 8, 12),
+    }
+
     def __init__(self):
-        self.board = Board()
+        self.board = None
+
+    def choose_difficulty(self):
+        print("Select difficulty:")
+        print("1. Easy   (5x5, 3 mines)")
+        print("2. Medium (6x6, 6 mines)")
+        print("3. Hard   (8x8, 12 mines)")
+
+        while True:
+            choice = input("Difficulty (1-3): ").strip()
+
+            if choice == "q":
+                return False
+
+            if choice in self.DIFFICULTIES:
+                name, rows, cols, mines = self.DIFFICULTIES[choice]
+                self.board = Board(rows, cols, mines)
+                print(f"{name} mode selected.")
+                return True
+
+            print("Invalid choice. Enter 1, 2, or 3.")
+    
 
     def display(self, reveal_mines=False):
         b = self.board
@@ -27,7 +54,12 @@ class Minesweeper:
 
     def run(self):
         print("Minesweeper")
+
+        if not self.choose_difficulty():
+            return
+
         print("Commands: r row col | f row col | q")
+
         while True:
             self.display()
             raw = input("> ").strip().lower()
